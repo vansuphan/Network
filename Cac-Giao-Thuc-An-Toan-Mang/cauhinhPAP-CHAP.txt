@@ -1,0 +1,135 @@
+2. 2 C?u hình xác th?c PAP 1 chi?u trên R1
+
+Trên R1
+
+hostname R1
+
+username R2 password R2pass  (khai báo database cho vi?c xác th?c)
+
+interface Serial0/0
+
+   ip address 172.25.3.2 255.255.255.0
+
+   encapsulation ppp  (dóng gói PPP trên s0/0)
+
+   ppp authentication pap   (yêu c?u xác th?c ki?u PAP trên R1)
+
+   (không c?n c?u hình g?i u/p sang R2 d? xác th?c)
+
+Trên R2
+
+hostname R2
+
+(không c?n c?u hình database cho vi?c xác th?c)
+
+interface Serial0/0
+
+   ip address 172.25.3.1 255.255.255.0
+
+   encapsulation ppp
+
+   (không c?n c?u hình yêu c?u xác th?c ki?u PAP trên R2)
+
+   ppp pap sent-username R2
+
+               password R2pass  (khai báo g?i u/p sang R1 d? xác th?c)
+
+ 
+
+2. 3 C?u hình xác th?c CHAP 2 chi?u trên c? R1 và R2
+
+Trên R1
+
+hostname R1
+
+username R2 password R1R2pass  (khai báo database cho vi?c xác th?c)
+
+interface Serial0/0
+
+   ip address 172.25.3.2 255.255.255.0
+
+   encapsulation ppp  (dóng gói PPP trên s0/0)
+
+   ppp authentication chap   (yêu c?u xác th?c ki?u CHAP trên R1)
+
+  
+
+Trên R2
+
+hostname R2
+
+username R1 password R1R2pass
+
+interface Serial0/0
+
+   ip address 172.25.3.1 255.255.255.0
+
+   encapsulation ppp
+
+   ppp authentication chap  (yêu c?u xác th?c ki?u CHAP trên R2)
+
+ 
+
+2. 4 C?u hình xác th?c CHAP 1 chi?u trên R2
+
+Trên R1
+
+hostname R1
+
+username R2 password R1R2pass  (khai báo database cho vi?c xác th?c)
+
+interface Serial0/0
+
+   ip address 172.25.3.2 255.255.255.0
+
+   encapsulation ppp  (dóng gói PPP trên s0/0)
+
+   (không yêu c?u xác th?c ki?u CHAP trên R1)
+
+  
+
+Trên R2
+
+hostname R2
+
+username R1 password R1R2pass
+
+interface Serial0/0
+
+   ip address 172.25.3.1 255.255.255.0
+
+   encapsulation ppp
+
+   ppp authentication chap  (yêu c?u xác th?c ki?u CHAP trên R2)
+
+ 
+
+(chú ý: trong ki?u xác th?c CHAP, yêu c?u password trên c? 2 router ph?i gi?ng nhau)
+
+ 
+
+3. M?t s? câu l?nh khác trên PPP
+
+Ngoài c?u hình dóng gói PPP, xác th?c. Còn có m?t vài câu l?nh c?u hình m?t s? ch?c nang trong PPP
+
+Câu l?nh c?u hình nén d? li?u
+
+R3(config)#interface serial 0/0
+
+R3(config-if)#encapsulation ppp
+
+R3(config-if)#compress [predictor | stac]    gõ 1 trong 2 phuong pháp
+
+(thu?ng không sd vì s? t?n tài nguyên c?a router)
+
+Câu L?nh c?u hình ki?m tra ch?t lu?ng du?ng truy?n
+
+R3(config)#interface serial 0/0
+
+R3(config-if)#encapsulation ppp
+
+R3(config-if)#ppp quality 80                
+
+du?ng truy?n d?t 80% m?i g?i Frame,  tính trênh l?ch gói tin nó g?i di và gói tin bên kia nh?n du?c; n?u gói tin nh?n du?c ch? <= 80% thì s? báo l?i cho ngu?i qu?n tr?
+
+C?u hình hình multilink…
